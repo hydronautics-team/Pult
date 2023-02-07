@@ -160,132 +160,132 @@ Window {
 //                }
 
 
-     ColumnLayout {
-        id: column
+    ColumnLayout {
+            id: column
 
-        Row {
-        id: r
-        /*anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top*/
-        MenuBar {
-            id: menuBar
-            palette.window: "#3D3D3D"
-            palette.text: "#DADADA"
-            // palette.highlight: "#76767E"
+                Row {
+                id: r
+                /*anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.top: parent.top*/
+                        MenuBar {
+                            id: menuBar
+                            palette.window: "#3D3D3D"
+                            palette.text: "#DADADA"
+                            // palette.highlight: "#76767E"
 
-            Menu {
-                palette.base: "#2D2D2F" // up rect
-                title: qsTr("&File")
-                Action { text: qsTr("&New...") }
-                Action { text: qsTr("&Open...") }
-                Action { text: qsTr("&Save") }
-                Action { text: qsTr("Save &As...") }
-                MenuSeparator { }
-                Action { text: qsTr("&Quit") }
-            }
-            Menu {
-                palette.base: "#2D2D2F"
-                title: qsTr("&Edit")
-                Action { text: qsTr("Cu&t") }
-                Action { text: "&Copy" }
-                Action { text: qsTr("&Paste") }
-            }
-            Menu {
-                palette.base: "#2D2D2F"
-                title: qsTr("&Windows")
-                Action { text: qsTr("&Full Screen") }
-                Action { text: "Split" }
-            }
-            Menu {
-                palette.base: "#2D2D2F"
-                title: qsTr("&Help")
-                Action { text: qsTr("&About") }
-            }
-            delegate: MenuBarItem {
-                id: menuBarItem
+                            Menu {
+                                palette.base: "#2D2D2F" // up rect
+                                title: qsTr("&File")
+                                Action { text: qsTr("&New...") }
+                                Action { text: qsTr("&Open...") }
+                                Action { text: qsTr("&Save") }
+                                Action { text: qsTr("Save &As...") }
+                                MenuSeparator { }
+                                Action { text: qsTr("&Quit") }
+                            }
+                            Menu {
+                                palette.base: "#2D2D2F"
+                                title: qsTr("&Edit")
+                                Action { text: qsTr("Cu&t") }
+                                Action { text: "&Copy" }
+                                Action { text: qsTr("&Paste") }
+                            }
+                            Menu {
+                                palette.base: "#2D2D2F"
+                                title: qsTr("&Windows")
+                                Action { text: qsTr("&Full Screen") }
+                                Action { text: "Split" }
+                            }
+                            Menu {
+                                palette.base: "#2D2D2F"
+                                title: qsTr("&Help")
+                                Action { text: qsTr("&About") }
+                            }
+                            delegate: MenuBarItem {
+                                id: menuBarItem
 
-                function replaceText(txt)
-                {
-                        var index = txt.indexOf("&"); //internet
-                        if(index >= 0)
-                            txt = txt.replace(txt.substr(index, 2), ("<u>" + txt.substr(index + 1, 1) +"</u>"));
-                        return txt;
+                                function replaceText(txt)
+                                {
+                                        var index = txt.indexOf("&"); //internet
+                                        if(index >= 0)
+                                            txt = txt.replace(txt.substr(index, 2), ("<u>" + txt.substr(index + 1, 1) +"</u>"));
+                                        return txt;
+                                }
+
+                                contentItem: Text {
+                                    text: replaceText(menuBarItem.text)
+                                    font: menuBarItem.font
+                                    opacity: enabled ? 1.0 : 0.3
+                                    color: menuBarItem.highlighted ? "#ffffff" : "#ffffff"
+                                    horizontalAlignment: Text.Right
+                                    verticalAlignment: Text.AlignVCenter
+                                    elide: Text.ElideRight
+                                }
+
+                                background: Rectangle { // это элемент панели
+                                    implicitWidth: 40
+                                    implicitHeight: 20
+                                    opacity: enabled ? 1 : 0.3
+                                    color: menuBarItem.highlighted ? "#a9a9a9" : "transparent"
+                                }
+                            }
+
+                                background: Rectangle { // это вехняя панель, на которой расположены кнопки меню
+                                    implicitWidth: Screen.width
+                                    implicitHeight: 20
+                                    color: "#3D3D3D"
+                                }
+
+                            }
+
                 }
 
-                contentItem: Text {
-                    text: replaceText(menuBarItem.text)
-                    font: menuBarItem.font
-                    opacity: enabled ? 1.0 : 0.3
-                    color: menuBarItem.highlighted ? "#ffffff" : "#ffffff"
-                    horizontalAlignment: Text.Right
-                    verticalAlignment: Text.AlignVCenter
-                    elide: Text.ElideRight
+                Row {
+                    id: row
+
+                    Rectangle {
+                        id: rectangle3
+                        width: 400*2
+                        height: 300*1.7
+                        color: "#737373"
+                    }
                 }
 
-                background: Rectangle { // это элемент панели
-                    implicitWidth: 40
-                    implicitHeight: 20
-                    opacity: enabled ? 1 : 0.3
-                    color: menuBarItem.highlighted ? "#a9a9a9" : "transparent"
-                }
+
+        RowLayout {
+            id: row1
+            spacing: 23
+            DirectionModule {
+                id: directionModule
+                // mode: mainWindow.context.imuMode
+            }
+            CompassModule {
+                id: compassModule
+                mode: mainWindow.context.imuMode
+            }
+            RpdModule {
+                id:rpdModule
+
             }
 
-				background: Rectangle { // это вехняя панель, на которой расположены кнопки меню
-					implicitWidth: Screen.width
-					implicitHeight: 20
-					color: "#3D3D3D"
-				}
+            Rectangle {
+                id: rectangle2
+                opacity: 0.1
+                width: 200
+                height: 200
+                color: "#ffffff"
+            }
 
-			}
-
-		}
+            Rectangle {
+                id: rectangle4
+                opacity: 0.1
+                width: 200
+                height: 200
+                color: "#ffffff"
+            }
+        }
     }
-                    Row {
-                        id: row
-
-                        Rectangle {
-                            id: rectangle3
-                            width: 400*2
-                            height: 300*1.7
-                            color: "#737373"
-                        }
-                    }
-
-
-                    RowLayout {
-                        id: row1
-                        spacing: 23
-                        DirectionModule {
-                            id: directionModule
-                            // mode: mainWindow.context.imuMode
-                        }
-                        CompassModule {
-                            id: compassModule
-                            mode: mainWindow.context.imuMode
-                        }
-                        RpdModule {
-                            id:rpdModule
-
-                        }
-
-                        Rectangle {
-                            id: rectangle2
-                            opacity: 0.1
-                            width: 200
-                            height: 200
-                            color: "#ffffff"
-                        }
-
-                        Rectangle {
-                            id: rectangle4
-                            opacity: 0.1
-                            width: 200
-                            height: 200
-                            color: "#ffffff"
-                        }
-                    }
-                }
 //            }
 //            Item {
 //                id: item6
