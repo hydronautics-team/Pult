@@ -16,8 +16,8 @@ Window {
     height: 800
     visible: true
     color: "#212121"
-    minimumWidth: 640
-    minimumHeight: 480
+    minimumWidth: 1200
+    minimumHeight: 800
 
     property int marginsHorizontal: 40
     property int marginsVertical: 40
@@ -25,6 +25,7 @@ Window {
 
     ColumnLayout {
         id: columnLayout
+        anchors.fill: parent
 
         Row {
             id: r
@@ -128,7 +129,6 @@ Window {
 
         Row {
             id: row
-
             Rectangle {
                 id: rectangle3
                 width: 400*2
@@ -140,6 +140,7 @@ Window {
         RowLayout {
              id: row1
              spacing: 23
+             anchors.bottom: parent.bottom
              DirectionModule {
                  id: directionModule
                  // mode: mainWindow.context.imuMode
