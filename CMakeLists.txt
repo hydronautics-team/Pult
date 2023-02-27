@@ -64,8 +64,6 @@ macro (add_svg)
         endif()
     endforeach()
 endmacro()
-
-add_subdirectory(Domain)
 add_subdirectory(MVVM)
 
 add_headers(

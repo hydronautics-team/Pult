@@ -1,0 +1,12 @@
+add_qml(
+    CompassModule.qml
+)
+add_svg(
+   compassPointer.svg
+   compassScale.svg
+   compass.svg
+   arrow.svg
+   point.svg
+   slider_compass.png
+)
+propagate_to_parent()
