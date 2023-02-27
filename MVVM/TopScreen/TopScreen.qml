@@ -1,3 +1,9 @@
+import "../TopScreen/Compass"
+import "../TopScreen/Attitude"
+import "../TopScreen/Depth"
+import "../TopScreen/Force"
+import "../TopScreen/Direction"
+import "../TopScreen/Rpd"
 import QtQuick 2.0
 import QtQuick.Layouts 6.0
 import QtQuick.Controls 6.2
@@ -119,6 +125,50 @@ Window {
             }
 
         }
+
+        Row {
+            id: row
+
+            Rectangle {
+                id: rectangle3
+                width: 400*2
+                height: 300*1.7
+                color: "#737373"
+            }
+        }
+
+        RowLayout {
+             id: row1
+             spacing: 23
+             DirectionModule {
+                 id: directionModule
+                 // mode: mainWindow.context.imuMode
+             }
+             CompassModule {
+                 id: compassModule
+                 mode: mainWindow.context.imuMode
+             }
+             RpdModule {
+                 id:rpdModule
+
+             }
+
+             Rectangle {
+                 id: rectangle2
+                 opacity: 0.1
+                 width: 200
+                 height: 200
+                 color: "#ffffff"
+             }
+
+             Rectangle {
+                 id: rectangle4
+                 opacity: 0.1
+                 width: 200
+                 height: 200
+                 color: "#ffffff"
+             }
+         }
     }
 
     Loader {
