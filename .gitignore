@@ -78,3 +78,7 @@ builds/
 *.mp4
 *.avi
 *.gif
+build
+.vscode
+.vs
+.editorconfig
