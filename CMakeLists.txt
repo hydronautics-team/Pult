@@ -18,6 +18,7 @@ macro (propagate_to_parent)
     set (SOURCES ${SOURCES} PARENT_SCOPE)
     set (QML ${QML} PARENT_SCOPE)
     set (SVG ${SVG} PARENT_SCOPE)
+    set (IMAGE ${IMAGE} PARENT_SCOPE)
 endmacro()
 
 macro (add_headers)
@@ -53,7 +54,6 @@ macro (add_qml)
     endforeach()
 endmacro()
 
-
 macro (add_svg)
     file (RELATIVE_PATH _relPath "${PROJECT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
     foreach (_src ${ARGN})
@@ -64,7 +64,17 @@ macro (add_svg)
         endif()
     endforeach()
 endmacro()
-add_subdirectory(MVVM)
+
+
+macro (add_image) #макрос производит поиск и подгрузку изображений из указанной папки
+    foreach (_src ${ARGN})
+        file(GLOB_RECURSE image_files LIST_DIRECTORIES false RELATIVE "${PROJECT_SOURCE_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/${_src}/*.svg ${CMAKE_CURRENT_SOURCE_DIR}/${_src}/*.png)
+        list (APPEND IMAGE "${image_files}")
+    endforeach()
+endmacro()
+
+#add_subdirectory(back)
+add_subdirectory(front)
 
 add_headers(
 
@@ -83,15 +93,16 @@ qt_add_executable(${TARGET_NAME_PROG}
     ${SOURCES}
 )
 
-message(STATUS ">---------------" ${PROJECT_NAME})
-message(STATUS ">---------------" ${TARGET_NAME_PROG})
-message(STATUS ">---------------" ${SVG})
+#message(STATUS ">---------------" ${PROJECT_NAME})
+#message(STATUS ">---------------" ${TARGET_NAME_PROG})
+#message(STATUS ">---------------" ${SVG})
+#message(STATUS ">---------------" ${IMAGE})
 
 qt_add_qml_module(${TARGET_NAME_PROG}
     URI ${PROJECT_NAME}
     VERSION 1.0
     QML_FILES ${QML}
-    RESOURCES ${SVG}
+    RESOURCES ${SVG} ${IMAGE}
     DESIGNER_SUPPORTED
 )
 
