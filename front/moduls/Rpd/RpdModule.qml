@@ -88,6 +88,8 @@ Item {
                         DepthElement{
                             id: dep_1
                         }
+
+                        //эта часть кода странно влияет на открытие окон по кнопке из меню (закрываются)
 //                        Timer{
 //                            interval: 1
 //                            running: true

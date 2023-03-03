@@ -20,7 +20,7 @@ Item {
     AxisBox{
         id: box1
         anchors.horizontalCenter: parent.horizontalCenter
-        numberAxix: 3
+        numberAxix: 3 // на это число прибавляется к целой части от valueNumber, чтобы получить отображаемое значение риски
         valueNumber: size
     }
     AxisBox{
