@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import "MVVM/TopScreen"
+import "front"
 
 Item{
     TopScreen{
