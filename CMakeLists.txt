@@ -65,7 +65,8 @@ macro (add_svg)
     endforeach()
 endmacro()
 
-macro (add_image)
+
+macro (add_image) #макрос производит поиск и подгрузку изображений из указанной папки
     foreach (_src ${ARGN})
         file(GLOB_RECURSE image_files LIST_DIRECTORIES false RELATIVE "${PROJECT_SOURCE_DIR}" ${CMAKE_CURRENT_SOURCE_DIR}/${_src}/*.svg ${CMAKE_CURRENT_SOURCE_DIR}/${_src}/*.png)
         list (APPEND IMAGE "${image_files}")
