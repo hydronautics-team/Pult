@@ -1,31 +1,83 @@
-#include <QApplication>
+#include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QSurfaceFormat>
+#include <QQuickWindow>
+#include <QQuickItem>
+#include <QRunnable>
+#include <gst/gst.h>
+
+class SetPlaying : public QRunnable
+{
+public:
+  SetPlaying(GstElement *);
+  ~SetPlaying();
+
+  void run ();
+
+private:
+  GstElement * pipeline_;
+};
+
+SetPlaying::SetPlaying (GstElement * pipeline)
+{
+  this->pipeline_ = pipeline ? static_cast<GstElement *> (gst_object_ref (pipeline)) : NULL;
+}
+
+SetPlaying::~SetPlaying ()
+{
+  if (this->pipeline_)
+    gst_object_unref (this->pipeline_);
+}
+
+void SetPlaying::run ()
+{
+  if (this->pipeline_)
+    gst_element_set_state (this->pipeline_, GST_STATE_PLAYING);
+}
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
 
-    QSurfaceFormat format;
-    format.setSamples(0);
-    QSurfaceFormat::setDefaultFormat(format);
+    int ret;
+
+    gst_init (&argc, &argv);
+
+    QGuiApplication app(argc, argv);
+
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+
+    GstElement *pipeline = gst_pipeline_new (NULL);
+    GstElement *src = gst_element_factory_make ("videotestsrc", NULL);
+    GstElement *glupload = gst_element_factory_make ("glupload", NULL);
+    /* the plugin must be loaded before loading the qml file to register the
+     * GstGLVideoItem qml item */
+    GstElement *sink = gst_element_factory_make ("qml6glsink", NULL);
+
+    g_assert (src && glupload && sink);
+
+    gst_bin_add_many (GST_BIN (pipeline), src, glupload, sink, nullptr);
+    gst_element_link_many (src, glupload, sink, nullptr);
 
     QQmlApplicationEngine engine;
-    const QUrl url(u"qrc:/PultInterface/main.qml"_qs);
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+    engine.load(QUrl(QStringLiteral("../Pult/main.qml")));
 
-    //Register types
+    QQuickItem *videoItem;
+    QQuickWindow *rootObject;
 
-    //Init
+    /* find and set the videoItem on the sink */
+    rootObject = static_cast<QQuickWindow *> (engine.rootObjects().first());
+    videoItem = rootObject->findChild<QQuickItem *> ("videoItem");
+    g_assert (videoItem);
+    g_object_set(sink, "widget", videoItem, nullptr);
 
-    engine.addImportPath("qrc:/qmldir");
+    rootObject->scheduleRenderJob (new SetPlaying (pipeline), QQuickWindow::BeforeSynchronizingStage); // добавление классового объекта который должен запуститься перед стартом рендеринга
 
-    engine.load(url);
 
-    return app.exec();
+
+    gst_element_set_state (pipeline, GST_STATE_NULL);
+    gst_object_unref (pipeline);
+
+
+    //gst_deinit(); //очистка памяти об всех объекта gstreamer
+
+    return app.exec(); //запуск выполнения программы и ожидание сигнала exit
 }

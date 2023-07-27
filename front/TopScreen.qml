@@ -7,6 +7,7 @@ import "moduls/Rpd"
 import QtQuick 2.0
 import QtQuick.Layouts 6.0
 import QtQuick.Controls 6.2
+import org.freedesktop.gstreamer.Qt6GLVideoItem 1.0
 
 Window {
     property var context
@@ -125,12 +126,19 @@ Window {
         // болванка экрана стриминга видео
         Row {
             id: row
-            Rectangle {
-                id: rectangle3
-                width: 400*2
-                height: 300*1.7
-                color: "#737373"
+            GstGLQt6VideoItem {
+                    id: video
+                    objectName: "videoItem"
+                    anchors.centerIn: parent
+                    width: parent.width
+                    height: parent.height
             }
+//            Rectangle {
+//                id: rectangle3
+//                width: 400*2
+//                height: 300*1.7
+//                color: "#737373"
+//            }
         }
 
         RowLayout {
